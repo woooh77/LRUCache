@@ -80,4 +80,13 @@ public class LRUCache {
         System.out.println("Current Cache = [ " + sb.toString() + "]");
     }
 
+    protected int getSize() {
+        return map.size();
+    }
+
+    protected void clearCache() {
+        map.clear();
+        head = null;
+        tail = null;
+    }
 }

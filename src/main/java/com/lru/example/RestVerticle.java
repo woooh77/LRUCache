@@ -19,7 +19,7 @@ public class RestVerticle extends AbstractVerticle {
     private final static Logger LOG = LoggerFactory.getLogger(RestVerticle.class);
 
     private final HttpServer httpServer;
-    private final static int PORT = 8888;
+    public final static int PORT = 8888;
     private final static String VALUE_STRING = "value=";
     private final LRUCache cache;
 
