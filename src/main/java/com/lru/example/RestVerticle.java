@@ -72,7 +72,31 @@ public class RestVerticle extends AbstractVerticle {
     }
 
     private void getValue(RoutingContext ctx) {
-        
+        final HttpServerResponse response = ctx.response();
+        int returnCode = HttpResponseStatus.INTERNAL_SERVER_ERROR.code();
+        JsonObject returnMessage = new JsonObject();
+        try {
+            String key = ctx.request().getParam("key");
+            if (key != null && !key.isEmpty()) {
+                int keyInt = Integer.parseInt(key);
+                Optional<Node> existedNode = cache.get(keyInt);
+
+                if (existedNode.isPresent()) {
+                    returnMessage.put("key", existedNode.get().getKey());
+                    returnMessage.put("value", existedNode.get().getValue());
+                    returnCode = HttpResponseStatus.OK.code();
+                } else {
+                    returnCode = HttpResponseStatus.NOT_FOUND.code();
+                }
+            } else
+                returnMessage = new JsonObject("{\"Exception\": \"Empty/Null key provided\"}");
+        } catch (Exception e) {
+            LOG.error("Exception : " + e.getMessage());
+            e.printStackTrace();
+            returnMessage = new JsonObject("{\"Exception\": \"" + e.getMessage() + "\"}");
+        } finally {
+            returnJsonResponse(response, returnMessage, returnCode);
+        }
     }
 
     private boolean isValidData(String data) {

@@ -65,6 +65,10 @@ public class LRUCache {
         return returnValue;
     }
 
+    protected Optional<Node> get(int key) {
+        return (map.containsKey(key) ? Optional.of(map.get(key)) : Optional.empty());
+    }
+
     // Only for debugging
     protected void printCurrentStack() {
         StringBuilder sb = new StringBuilder();
